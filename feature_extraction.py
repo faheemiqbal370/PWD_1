@@ -336,6 +336,66 @@ def url_google_index(url):
 def domain_google_index(domain):
 
     return -1
+
+
+def qty_params(params):
+
+    if params == "":
+        return 0
+
+    return len(params.split("&"))
+
+def qty_tld_url(url):
+
+    tlds = [
+        ".com",
+        ".org",
+        ".net",
+        ".edu",
+        ".gov",
+        ".in"
+    ]
+
+    count = 0
+
+    for tld in tlds:
+        count += url.lower().count(tld)
+
+    return count
+
+def tld_present_params(params):
+
+    tlds = [
+        ".com",
+        ".org",
+        ".net",
+        ".edu",
+        ".gov",
+        ".in"
+    ]
+
+    for tld in tlds:
+
+        if tld in params.lower():
+            return 1
+
+    return 0
+
+def server_client_domain(domain):
+
+    keywords = [
+        "server",
+        "client"
+    ]
+
+    for word in keywords:
+
+        if word in domain.lower():
+            return 1
+
+    return 0
+
+
 # Master Function
 def extract_all_features(url):
 
@@ -410,6 +470,21 @@ def extract_all_features(url):
     features["domain_google_index"] = (
         domain_google_index(domain)
     )
+    features["qty_tld_url"] = qty_tld_url(url)
+
+    features["qty_params"] = qty_params(params)
+
+    features["tld_present_params"] = (
+        tld_present_params(params)
+    )
+
+    features["server_client_domain"] = (
+         server_client_domain(domain)
+    )
+
+    features["domain_spf"] = 0
+
+    features["time_response"] = 0
 
     return features
 
